@@ -1,16 +1,10 @@
 {
   "manifest_version": 3,
   "name": "Fantasy Draft Command Center",
-  "version": "0.4.0",
-  "description": "Live ESPN fantasy football draft companion with auto-sync, rapid entry, roster-aware recommendations, and return probability.",
-  "permissions": ["storage", "activeTab", "scripting"],
+  "version": "0.5.0",
+  "description": "Manual fantasy football draft companion with live recommendations, roster tracking, and make-it-back estimates.",
+  "permissions": ["storage"],
   "host_permissions": ["https://fantasy.espn.com/*", "https://www.espn.com/*"],
-  "web_accessible_resources": [
-    {
-      "resources": ["page-bridge.js"],
-      "matches": ["https://fantasy.espn.com/*", "https://www.espn.com/*"]
-    }
-  ],
   "action": {
     "default_title": "Fantasy Draft Command Center",
     "default_popup": "popup.html"
@@ -18,9 +12,9 @@
   "content_scripts": [
     {
       "matches": ["https://fantasy.espn.com/*", "https://www.espn.com/*"],
-      "js": ["players.js", "engine.js", "content.js", "debug.js"],
+      "js": ["players.js", "engine.js", "content.js"],
       "css": ["content.css"],
-      "run_at": "document_start"
+      "run_at": "document_idle"
     }
   ]
 }
