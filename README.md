@@ -1,6 +1,6 @@
 # Fantasy Draft Command Center
 
-Chrome/Edge companion extension for a 12-team ESPN fantasy football snake draft.
+Standalone manual draft assistant for a 12-team fantasy football snake draft. No browser extension or ESPN integration is required.
 
 ## League profile
 - 12 teams
@@ -12,23 +12,33 @@ Chrome/Edge companion extension for a 12-team ESPN fantasy football snake draft.
 - No keepers
 - 15 draft rounds
 
-## Core modes
-1. **ESPN Auto-Sync**: observes the ESPN draft room and attempts to detect newly drafted players.
-2. **Rapid Mode**: type a player name, press Enter to mark drafted by another team, or use the Mine button for your pick.
-3. **Bulk Catch-Up**: paste multiple player names to process missed selections quickly.
-4. **Decision Engine**: ranks remaining players based on base rank, roster construction, positional scarcity, league scoring, and time until your next pick.
-5. **Will He Make It Back?**: heuristic return-to-next-pick estimate based on rank and picks until your next turn.
+## How it works
+1. Open `index.html` in a browser.
+2. Set your draft slot (1-12).
+3. Every time a player is selected in the real draft, find that player on the page.
+4. Click **Other** if another team selected him, or **Mine** if you selected him.
+5. The player is removed from the available board immediately.
+6. The Top 5 recommendations, roster needs, pick count, next-pick distance, and make-it-back estimates recalculate automatically.
 
-## Install locally
-1. Open `chrome://extensions` (or `edge://extensions`).
-2. Enable **Developer mode**.
-3. Choose **Load unpacked**.
-4. Select this repository folder.
-5. Open your ESPN fantasy football draft room.
-6. Click the extension icon and set your draft slot.
+## Features
+- Searchable available-player board
+- Position filters
+- Other / Mine selection buttons
+- Automatic snake-draft pick tracking
+- Top 5 roster-aware recommendations
+- Full-PPR and 6-point passing-TD weighting
+- Positional scarcity and roster-need adjustments
+- Make-it-back estimate for your next selection
+- Live roster summary
+- Recent draft history
+- Undo and Reset Draft
+- Draft state saved locally in the browser
 
-## Important note about ESPN Auto-Sync
-ESPN can change its draft-room HTML at any time. The extension intentionally uses multiple text and DOM heuristics rather than one fragile selector. Rapid Mode and Bulk Catch-Up are always available as fallbacks.
+## Files used by the standalone page
+- `index.html`
+- `styles.css`
+- `app.js`
+- `players.js`
+- `engine.js`
 
-## Development
-This is a Manifest V3 extension with no build step and no external dependencies.
+The older extension files can remain in the repository for reference, but they are not required to run the standalone page.
