@@ -8,73 +8,66 @@
 </head>
 <body>
   <main class="app-shell">
-    <header class="hero">
+    <header class="topbar">
       <div>
-        <p class="eyebrow">2026 Fantasy Football Draft</p>
+        <p class="eyebrow">2026 Fantasy Football</p>
         <h1>Draft Command Center</h1>
-        <p class="sub">Manual draft board built for speed: mark every selection as <strong>Other</strong> or <strong>Mine</strong> and the recommendations update instantly.</p>
       </div>
-      <div class="hero-actions">
-        <label class="field compact">Draft slot
-          <select id="slot"></select>
-        </label>
-        <button id="undo" class="ghost" type="button">Undo</button>
-        <button id="reset" class="danger" type="button">Reset Draft</button>
+      <div class="top-actions">
+        <label>Draft slot <select id="slot"></select></label>
+        <button id="undo" type="button">Undo</button>
+        <button id="reset" class="danger" type="button">Reset</button>
       </div>
     </header>
 
     <section class="status-strip" aria-live="polite">
-      <div><span class="label">Current pick</span><strong id="currentPick">1.01</strong></div>
-      <div><span class="label">Your next pick</span><strong id="nextPick">1.01</strong></div>
-      <div><span class="label">Picks away</span><strong id="picksAway">0</strong></div>
-      <div><span class="label">Drafted</span><strong id="draftedCount">0 / 180</strong></div>
+      <div><span>Current</span><strong id="currentPick">1.01</strong></div>
+      <div><span>Your next</span><strong id="nextPick">1.01</strong></div>
+      <div><span>Picks away</span><strong id="picksAway">0</strong></div>
+      <div><span>Drafted</span><strong id="draftedCount">0 / 180</strong></div>
     </section>
 
-    <section class="grid top-grid">
-      <div class="panel recommendation-panel">
-        <div class="panel-heading">
-          <div><p class="eyebrow">Decision engine</p><h2>Best Recommendations</h2></div>
-          <span class="badge">Full PPR • 6-pt pass TD</span>
-        </div>
-        <div id="recommendations" class="recommendations"></div>
+    <section class="workspace">
+      <div class="left-column">
+        <section class="panel quick-pick-panel">
+          <div class="section-head">
+            <div><p class="eyebrow">Fast entry</p><h2>Mark the latest pick</h2></div>
+            <span class="hint">Search → Other / Mine</span>
+          </div>
+          <input id="search" class="search" type="search" placeholder="Start typing a player name…" autocomplete="off" />
+          <div class="filters" id="filters">
+            <button class="filter active" data-pos="ALL" type="button">All</button>
+            <button class="filter" data-pos="RB" type="button">RB</button>
+            <button class="filter" data-pos="WR" type="button">WR</button>
+            <button class="filter" data-pos="QB" type="button">QB</button>
+            <button class="filter" data-pos="TE" type="button">TE</button>
+            <button class="filter" data-pos="DST" type="button">D/ST</button>
+            <button class="filter" data-pos="K" type="button">K</button>
+          </div>
+          <div id="playerRows" class="player-list"></div>
+        </section>
+
+        <section class="panel history-panel">
+          <div class="section-head"><div><p class="eyebrow">Draft log</p><h2>Recent picks</h2></div></div>
+          <div id="history" class="history"></div>
+        </section>
       </div>
 
-      <div class="panel roster-panel">
-        <div class="panel-heading"><div><p class="eyebrow">Your team</p><h2>Live Roster</h2></div></div>
-        <div id="rosterSummary" class="roster-summary"></div>
-        <div id="myRoster" class="my-roster"></div>
-      </div>
-    </section>
+      <aside class="right-column">
+        <section class="panel recommendation-panel sticky-panel">
+          <div class="section-head">
+            <div><p class="eyebrow">Decision engine</p><h2>Best Available</h2></div>
+            <span class="badge">PPR • 6-pt pass TD</span>
+          </div>
+          <div id="recommendations" class="recommendations"></div>
+        </section>
 
-    <section class="panel player-panel">
-      <div class="panel-heading player-heading">
-        <div><p class="eyebrow">Draft board</p><h2>Select Each Drafted Player</h2></div>
-        <div class="search-wrap">
-          <input id="search" type="search" placeholder="Search player name…" autocomplete="off" />
-        </div>
-      </div>
-
-      <div class="filters" id="filters">
-        <button class="filter active" data-pos="ALL" type="button">All</button>
-        <button class="filter" data-pos="RB" type="button">RB</button>
-        <button class="filter" data-pos="WR" type="button">WR</button>
-        <button class="filter" data-pos="QB" type="button">QB</button>
-        <button class="filter" data-pos="TE" type="button">TE</button>
-        <button class="filter" data-pos="DST" type="button">D/ST</button>
-        <button class="filter" data-pos="K" type="button">K</button>
-      </div>
-
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Rank</th><th>Player</th><th>Pos</th><th>Team</th><th>Action</th></tr></thead>
-          <tbody id="playerRows"></tbody>
-        </table>
-      </div>
-    </section>
-
-    <section class="panel history-panel">
-      <div class="panel-heading"><div><p class="eyebrow">Draft log</p><h2>Recent Selections</h2></div></div>
-      <div id="history" class="history"></div>
+        <section class="panel roster-panel">
+          <div class="section-head"><div><p class="eyebrow">Your team</p><h2>Roster</h2></div></div>
+          <div id="rosterSummary" class="roster-summary"></div>
+          <div id="myRoster" class="my-roster"></div>
+        </section>
+      </aside>
     </section>
   </main>
 
