@@ -3,7 +3,7 @@
   const E=globalThis.FDCC;
   if(!players.length||!E)return;
 
-  const state={slot:1,status:{},history:[],pick:1,filter:'ALL',search:''};
+  const state={slot:3,status:{},history:[],pick:1,filter:'ALL',search:''};
   const els={
     slot:document.getElementById('slot'),undo:document.getElementById('undo'),reset:document.getElementById('reset'),
     currentPick:document.getElementById('currentPick'),nextPick:document.getElementById('nextPick'),picksAway:document.getElementById('picksAway'),draftedCount:document.getElementById('draftedCount'),
@@ -14,7 +14,7 @@
   for(let i=1;i<=12;i++){const o=document.createElement('option');o.value=i;o.textContent=`Pick ${i}`;els.slot.appendChild(o)}
 
   function save(){localStorage.setItem('fdcc-web-state',JSON.stringify({slot:state.slot,status:state.status,history:state.history,pick:state.pick}))}
-  function load(){try{const raw=JSON.parse(localStorage.getItem('fdcc-web-state')||'null');if(raw){state.slot=Number(raw.slot)||1;state.status=raw.status||{};state.history=Array.isArray(raw.history)?raw.history:[];state.pick=Number(raw.pick)||1}}catch{}}
+  function load(){try{const raw=JSON.parse(localStorage.getItem('fdcc-web-state')||'null');if(raw){state.slot=Number(raw.slot)||3;state.status=raw.status||{};state.history=Array.isArray(raw.history)?raw.history:[];state.pick=Number(raw.pick)||1}}catch{}}
   function pickLabel(n){const round=Math.floor((n-1)/12)+1;const slot=(n-1)%12+1;return `${round}.${String(slot).padStart(2,'0')}`}
   function mine(){return players.filter(p=>state.status[p.id]==='mine')}
   function mark(p,owner){if(!p||state.status[p.id])return;state.status[p.id]=owner;state.history.push({id:p.id,owner,pick:state.pick});state.pick=Math.min(181,state.pick+1);state.search='';els.search.value='';save();render();requestAnimationFrame(()=>els.search.focus())}
@@ -87,7 +87,7 @@
 
   function render(){renderStatus();renderRecommendations();renderRoster();renderPlayers();renderHistory()}
 
-  els.slot.addEventListener('change',()=>{state.slot=Number(els.slot.value)||1;save();render()});
+  els.slot.addEventListener('change',()=>{state.slot=Number(els.slot.value)||3;save();render()});
   els.undo.addEventListener('click',undo);els.reset.addEventListener('click',reset);
   els.search.addEventListener('input',()=>{state.search=els.search.value;renderPlayers()});
   els.search.addEventListener('keydown',e=>{if(e.key==='Enter'){const q=E.normalize(state.search);if(!q)return;const p=players.filter(x=>!state.status[x.id]).find(x=>E.normalize(x.name).includes(q));if(p){e.preventDefault();mark(p,'other')}}});
