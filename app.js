@@ -8,7 +8,7 @@
     slot:document.getElementById('slot'),undo:document.getElementById('undo'),reset:document.getElementById('reset'),
     currentPick:document.getElementById('currentPick'),nextPick:document.getElementById('nextPick'),picksAway:document.getElementById('picksAway'),draftedCount:document.getElementById('draftedCount'),
     recommendations:document.getElementById('recommendations'),rosterSummary:document.getElementById('rosterSummary'),myRoster:document.getElementById('myRoster'),
-    search:document.getElementById('search'),filters:document.getElementById('filters'),playerRows:document.getElementById('playerRows'),history:document.getElementById('history')
+    search:document.getElementById('search'),filters:document.getElementById('filters'),playerRows:document.getElementById('playerRows')
   };
 
   for(let i=1;i<=12;i++){const o=document.createElement('option');o.value=i;o.textContent=`Pick ${i}`;els.slot.appendChild(o)}
@@ -84,12 +84,7 @@
     });
   }
 
-  function renderHistory(){
-    els.history.innerHTML='';const recent=state.history.slice(-20).reverse();if(!recent.length){els.history.innerHTML='<div class="empty">Selections will appear here.</div>';return}
-    recent.forEach(h=>{const p=players.find(x=>x.id===h.id);if(!p)return;const d=document.createElement('div');d.className=`history-item ${h.owner==='mine'?'mine':''}`;d.textContent=`${pickLabel(h.pick)} • ${p.name} • ${h.owner==='mine'?'MINE':'Other'}`;els.history.appendChild(d)});
-  }
-
-  function render(){renderStatus();renderRecommendations();renderRoster();renderPlayers();renderHistory()}
+  function render(){renderStatus();renderRecommendations();renderRoster();renderPlayers()}
 
   els.slot.addEventListener('change',()=>{state.slot=Number(els.slot.value)||3;save();render()});
   els.undo.addEventListener('click',undo);els.reset.addEventListener('click',reset);
