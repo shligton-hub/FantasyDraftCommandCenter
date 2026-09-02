@@ -21,13 +21,17 @@
   function undo(){const h=state.history.pop();if(!h)return;delete state.status[h.id];state.pick=Math.max(1,h.pick);save();render()}
   function reset(){if(!confirm('Reset the entire draft board?'))return;state.status={};state.history=[];state.pick=1;state.search='';els.search.value='';save();render()}
 
-  function recommendationReason(p,myPlayers){const counts=E.counts(myPlayers);const round=Math.floor((state.pick-1)/12)+1;const reasons=[];
+  function recommendationReason(p,myPlayers){
+    const counts=E.counts(myPlayers);const round=Math.floor((state.pick-1)/12)+1;const reasons=[];const flexEligible=myPlayers.filter(x=>['RB','WR','TE'].includes(x.pos)).length;
+    if(p.pos==='WR')reasons.push('full-PPR volume boost');
     if(p.pos==='RB'&&counts.RB<2)reasons.push('fills starting RB');
     if(p.pos==='WR'&&counts.WR<2)reasons.push('fills starting WR');
-    if(p.pos==='QB'&&counts.QB===0&&round>=4)reasons.push('QB value window');
+    if(p.pos==='QB'&&counts.QB===0&&round>=3)reasons.push('6-pt TD QB value');
     if(p.pos==='TE'&&counts.TE===0)reasons.push('starting TE need');
-    if(['RB','WR'].includes(p.pos)&&myPlayers.length>=7)reasons.push('bench upside');
+    if(['RB','WR','TE'].includes(p.pos)&&flexEligible<6)reasons.push('fills FLEX pool');
+    if(['RB','WR'].includes(p.pos)&&myPlayers.length>=7)reasons.push('PPR bench upside');
     if(p.rank<=state.pick+4)reasons.push('strong value vs board');
+    if(p.returnChance<=25)reasons.push('unlikely to make it back');
     if(!reasons.length)reasons.push('best blend of value and roster fit');
     return reasons.slice(0,2).join(' • ');
   }
@@ -60,8 +64,8 @@
 
   function renderRoster(){
     const myPlayers=mine();const c=E.counts(myPlayers);const flexCount=Math.max(0,myPlayers.filter(p=>['RB','WR','TE'].includes(p.pos)).length-5);const bench=Math.max(0,myPlayers.length-9);
-    const slots=[['QB',c.QB],['RB',c.RB],['WR',c.WR],['TE',c.TE],['FLEX',flexCount],['D/ST',c.DST],['K',c.K],['BENCH',bench]];
-    els.rosterSummary.innerHTML=slots.map(([k,v])=>`<div class="roster-pill"><strong>${v}</strong><span>${k}</span></div>`).join('');
+    const slots=[['QB',c.QB],['RB',c.RB],['WR',c.WR],['TE',c.TE],['FLEX',flexCount],['D/ST',c.DST],['K',c.K],['BENCH',bench],['IR',0]];
+    els.rosterSummary.innerHTML=slots.map(([k,v])=>`<div class="roster-pill"><strong>${v}${k==='IR'?'/3':''}</strong><span>${k}</span></div>`).join('');
     els.myRoster.innerHTML='';
     if(!myPlayers.length){els.myRoster.innerHTML='<div class="empty">Your picks will appear here.</div>';return}
     myPlayers.forEach(p=>{const h=state.history.find(x=>x.id===p.id);const d=document.createElement('div');d.className='my-player';d.innerHTML=`<span>${p.name}</span><span>${p.pos}${h?` • ${pickLabel(h.pick)}`:''}</span>`;els.myRoster.appendChild(d)});
